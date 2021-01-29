@@ -108,7 +108,7 @@ See the documentation in the [base repository](https://github.com/andrey-helldar
 
 [badge_stable]:         https://img.shields.io/github/v/release/andrey-helldar/env-sync-symfony?label=stable&style=flat-square
 
-[badge_styleci]:        https://styleci.io/repos/333111450/shield
+[badge_styleci]:        https://styleci.io/repos/334284853/shield
 
 [badge_unstable]:       https://img.shields.io/badge/unstable-dev--main-orange?style=flat-square
 
@@ -120,4 +120,4 @@ See the documentation in the [base repository](https://github.com/andrey-helldar
 
 [link_scrutinizer]:     https://scrutinizer-ci.com/g/andrey-helldar/env-sync-symfony/?branch=main
 
-[link_styleci]:         https://github.styleci.io/repos/333111450
+[link_styleci]:         https://github.styleci.io/repos/334284853
