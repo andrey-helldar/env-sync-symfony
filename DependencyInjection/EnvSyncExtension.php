@@ -4,26 +4,22 @@ namespace Helldar\EnvSync\Frameworks\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension as BaseExtension;
 
-class Extension extends BaseExtension
+class EnvSyncExtension extends BaseExtension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->xmlLoader($container)->load('command.xml');
-        $this->yamlLoader($container)->load('env-sync.yml');
+        $this->loader(XmlFileLoader::class, $container)->load('services.xml');
+        $this->loader(YamlFileLoader::class, $container)->load('parameters.yml');
     }
 
-    protected function xmlLoader(ContainerBuilder $container): XmlFileLoader
+    protected function loader(string $loader, ContainerBuilder $container): FileLoader
     {
-        return new XmlFileLoader($container, $this->locator());
-    }
-
-    protected function yamlLoader(ContainerBuilder $container): YamlFileLoader
-    {
-        return new YamlFileLoader($container, $this->locator());
+        return new $loader($container, $this->locator());
     }
 
     protected function locator(): FileLocator

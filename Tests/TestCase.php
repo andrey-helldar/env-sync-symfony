@@ -1,23 +1,18 @@
 <?php
 
-namespace Tests;
+namespace Helldar\EnvSync\Frameworks\Symfony\Tests;
 
-use Composer\Config;
-use Helldar\EnvSync\Frameworks\Symfony\Command\Sync;
-use Helldar\EnvSync\Frameworks\Symfony\EnvSyncBundle;
-use Helldar\EnvSync\Services\Syncer;
+use Helldar\EnvSync\Frameworks\Symfony\Tests\Concerns\Bundle;
+use Helldar\EnvSync\Frameworks\Symfony\Tests\Concerns\Files;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Tests\Concerns\Configurable;
-use Tests\Concerns\Files;
 
 abstract class TestCase extends BaseTestCase
 {
-    use Configurable;
     use Files;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\DependencyInjection\ContainerInterface */
@@ -30,10 +25,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->mockContainer();
         $this->mockApplication();
-        $this->mockCommand();
     }
-
-    abstract protected function getSyncConfig(): array;
 
     protected function mockContainer(): void
     {
@@ -52,7 +44,7 @@ abstract class TestCase extends BaseTestCase
         $kernel->expects($this->once())
             ->method('getBundles')
             ->will($this->returnValue([
-                EnvSyncBundle::class,
+                new Bundle(),
             ]));
 
         $kernel->expects($this->any())
@@ -67,34 +59,12 @@ abstract class TestCase extends BaseTestCase
         $this->application = new Application($this->mockKernel());
     }
 
-    protected function mockCommand(): void
-    {
-        $command = $this->getCommand();
-
-        $this->application->add($command);
-    }
-
-    protected function composerConfig(): Config
-    {
-        return new Config();
-    }
-
-    protected function getSyncer(): Syncer
-    {
-        return Syncer::make($this->getSyncConfig());
-    }
-
-    protected function getCommand(): Sync
-    {
-        return new Sync($this->composerConfig(), $this->getSyncer());
-    }
-
     protected function tester(Command $command): CommandTester
     {
         return new CommandTester($command);
     }
 
-    protected function call(string $name, array $options = [])
+    protected function call(string $name, array $options = []): string
     {
         $command = $this->application->find($name);
 

@@ -1,17 +1,18 @@
 <?php
 
-namespace Tests\Unit;
+namespace Helldar\EnvSync\Frameworks\Symfony\Tests\Unit;
 
+use Helldar\EnvSync\Frameworks\Symfony\Tests\TestCase;
 use Helldar\Support\Exceptions\DirectoryNotFoundException;
-use Tests\TestCase;
 
-final class ConfigurableTest extends TestCase
+final class MainTest extends TestCase
 {
-    protected $fixture_expected = 'expected-config';
-
     public function testCustomPath()
     {
-        $this->call('env:sync', ['--path' => $this->path]);
+        $result = $this->call('env:sync', ['--path' => $this->path]);
+
+        $this->assertStringContainsString('Searching...', $result);
+        $this->assertStringContainsString('The found keys were successfully saved to the .env.example file.', $result);
 
         $this->assertFileExists($this->targetPath());
         $this->assertFileEquals($this->expected(), $this->targetPath());
@@ -22,10 +23,5 @@ final class ConfigurableTest extends TestCase
         $this->expectException(DirectoryNotFoundException::class);
 
         $this->call('env:sync', ['--path' => '/foo']);
-    }
-
-    protected function getSyncConfig(): array
-    {
-        return $this->config();
     }
 }

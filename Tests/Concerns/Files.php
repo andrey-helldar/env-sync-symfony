@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Concerns;
+namespace Helldar\EnvSync\Frameworks\Symfony\Tests\Concerns;
 
 trait Files
 {

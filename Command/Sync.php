@@ -4,10 +4,14 @@ namespace Helldar\EnvSync\Frameworks\Symfony\Command;
 
 use Composer\Config;
 use Helldar\EnvSync\Services\Syncer;
+use Helldar\Support\Facades\Helpers\Filesystem\File;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class Sync extends Command
 {
@@ -101,7 +105,21 @@ class Sync extends Command
 
     protected function syncerConfig(): array
     {
-        return [];
+        $path = realpath(__DIR__ . '/../Resources/config');
+
+        $filename = 'parameters.yml';
+
+        if (! File::exists($path . DIRECTORY_SEPARATOR . $filename)) {
+            return [];
+        }
+
+        $container = $this->container();
+
+        $loader = $this->loader($container, $path);
+
+        $loader->load($filename);
+
+        return $container->getParameterBag()->all();
     }
 
     protected function setSyncerConfig(): void
@@ -109,5 +127,15 @@ class Sync extends Command
         if ($config = $this->syncerConfig()) {
             $this->syncer->setConfig($config);
         }
+    }
+
+    protected function container(): ContainerBuilder
+    {
+        return new ContainerBuilder();
+    }
+
+    protected function loader(ContainerBuilder $container, string $path): YamlFileLoader
+    {
+        return new YamlFileLoader($container, new FileLocator($path));
     }
 }
