@@ -1,6 +1,6 @@
 {
     "name": "andrey-helldar/env-sync-symfony",
-    "description": "`env-sync` package adapter for Laravel framework",
+    "description": "env-sync package adapter for Laravel framework",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["env", "dotenv", "environment", "sync", "symfony", "framework"],
