@@ -26,14 +26,14 @@ abstract class TestCase extends BaseTestCase
     /** @var \Symfony\Bundle\FrameworkBundle\Console\Application */
     protected $application;
 
-    abstract protected function getSyncConfig(): array;
-
     protected function setUp(): void
     {
         $this->mockContainer();
         $this->mockApplication();
         $this->mockCommand();
     }
+
+    abstract protected function getSyncConfig(): array;
 
     protected function mockContainer(): void
     {
