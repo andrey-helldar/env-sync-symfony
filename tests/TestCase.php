@@ -3,7 +3,8 @@
 namespace Tests;
 
 use Composer\Config;
-use Helldar\EnvSync\Frameworks\Symfony\Console\Sync;
+use Helldar\EnvSync\Frameworks\Symfony\Command\Sync;
+use Helldar\EnvSync\Frameworks\Symfony\EnvSyncBundle;
 use Helldar\EnvSync\Services\Syncer;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -25,14 +26,14 @@ abstract class TestCase extends BaseTestCase
     /** @var \Symfony\Bundle\FrameworkBundle\Console\Application */
     protected $application;
 
+    abstract protected function getSyncConfig(): array;
+
     protected function setUp(): void
     {
         $this->mockContainer();
         $this->mockApplication();
         $this->mockCommand();
     }
-
-    abstract protected function getSyncConfig(): ?array;
 
     protected function mockContainer(): void
     {
@@ -50,7 +51,9 @@ abstract class TestCase extends BaseTestCase
 
         $kernel->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue([
+                EnvSyncBundle::class,
+            ]));
 
         $kernel->expects($this->any())
             ->method('getContainer')

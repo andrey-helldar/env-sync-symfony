@@ -1,22 +1,29 @@
 <?php
 
-namespace Helldar\EnvSync\Frameworks\Symfony\CI;
+namespace Helldar\EnvSync\Frameworks\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension as BaseExtension;
 
 class Extension extends BaseExtension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->loader($container)->load('env-sync.xml');
+        $this->xmlLoader($container)->load('command.xml');
+        $this->yamlLoader($container)->load('env-sync.yml');
     }
 
-    protected function loader(ContainerBuilder $container): XmlFileLoader
+    protected function xmlLoader(ContainerBuilder $container): XmlFileLoader
     {
         return new XmlFileLoader($container, $this->locator());
+    }
+
+    protected function yamlLoader(ContainerBuilder $container): YamlFileLoader
+    {
+        return new YamlFileLoader($container, $this->locator());
     }
 
     protected function locator(): FileLocator
@@ -26,6 +33,6 @@ class Extension extends BaseExtension
 
     protected function configPath(): string
     {
-        return realpath(__DIR__ . '/../../config');
+        return realpath(__DIR__ . '/../Resources/config');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Helldar\EnvSync\Frameworks\Symfony\Console;
+namespace Helldar\EnvSync\Frameworks\Symfony\Command;
 
 use Composer\Config;
 use Helldar\EnvSync\Services\Syncer;
@@ -99,9 +99,9 @@ class Sync extends Command
         $this->output->writeln($styled);
     }
 
-    protected function syncerConfig(): ?array
+    protected function syncerConfig(): array
     {
-        return null;
+        return [];
     }
 
     protected function setSyncerConfig(): void

@@ -35,7 +35,7 @@ Or manually update `require-dev` block of `composer.json` and run `composer upda
 ```json
 {
     "require-dev": {
-        "andrey-helldar/env-sync-symfony": "^1.2"
+        "andrey-helldar/env-sync-symfony": "^1.0"
     }
 }
 ```
@@ -49,19 +49,14 @@ Or manually update `require-dev` block of `composer.json` and run `composer upda
 
 ### Symfony Framework
 
-Add the `EnvSyncBundle` to your application's kernel:
+Enable the bundle by adding it to the list of registered bundles in the `config/bundles.php` file of your project:
 
 ```php
 use Helldar\EnvSync\Frameworks\Symfony\EnvSyncBundle;
 
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new EnvSyncBundle()
-        // ...
-    ];
-}
+return [
+    EnvSyncBundle::class => ['all' => true]
+];
 ```
 
 Just execute the `php bin/console env:sync` command.
@@ -80,25 +75,23 @@ You can also specify the invocation when executing the `composer update` command
 
 Now, every time you run the `composer update` command, the environment settings file will be synchronized.
 
-If you want to change the default configuration, configure the `env-sync-symfony` keys in your `config.yml`:
+If you want to change the default configuration, configure the `env-sync` keys in your `config.yml`:
 
 ```
 env-sync-symfony:
     forces:
 ```
 
-
 ### Laravel / Lumen Frameworks
 
 See the documentation in the [andrey-helldar/env-sync-laravel](https://github.com/andrey-helldar/env-sync-laravel) adapter repository.
-
 
 ### Native using
 
 See the documentation in the [base repository](https://github.com/andrey-helldar/env-sync).
 
 
-[badge_build]:          https://img.shields.io/github/workflow/status/andrey-helldar/env-sync-symfony/native?style=flat-square
+[badge_build]:          https://img.shields.io/github/workflow/status/andrey-helldar/env-sync-symfony/phpunit?style=flat-square
 
 [badge_downloads]:      https://img.shields.io/packagist/dt/andrey-helldar/env-sync-symfony.svg?style=flat-square
 
