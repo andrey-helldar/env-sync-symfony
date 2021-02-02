@@ -14,6 +14,10 @@
 [![Total Downloads][badge_downloads]][link_packagist]
 [![License][badge_license]][link_license]
 
+> Note
+>
+> My knowledge of Symfony is low and I am having some difficulty developing this project. I'll do it, but it takes time. You can wait a bit or help with the implementation 😊
+
 ## Table of contents
 
 * [Installation](#installation)
